@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+/**
+ * This is an example of a protobuf message.
+ */
+package base;
+
+option java_package = "com.benai.mahjong.message";
+option java_outer_classname = "CommandBase";
+
+message MessageName {
+    uint32 message_field = 1;
+}
