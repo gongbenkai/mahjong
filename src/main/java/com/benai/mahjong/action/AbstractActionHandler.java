@@ -6,19 +6,19 @@
 package com.benai.mahjong.action;
 
 import com.benai.mahjong.card.BaseCard;
-import com.benai.mahjong.room.RoomContext;
 import java.util.Queue;
+import com.benai.mahjong.room.IRoomContext;
 
 /**
  *
  * @author gongbenkai
  */
-public abstract class AbstractActionHandler implements ActionHandler{
-    private RoomContext ctx;
-    private ActionHandler next;
+public abstract class AbstractActionHandler implements IActionHandler{
+    private IRoomContext ctx;
+    private IActionHandler next;
     
     @Override
-    public RoomContext getContext() {
+    public IRoomContext getContext() {
         if (this.ctx == null) {
             throw new NullPointerException("RoomContext");
         }
@@ -26,16 +26,16 @@ public abstract class AbstractActionHandler implements ActionHandler{
     }
     
     @Override
-    public ActionHandler next() {
+    public IActionHandler next() {
         return this.next;
     }
     
     @Override
-    public void doAction(RoomContext ctx, Queue<BaseCard> hasCards, BaseCard card) {
+    public void doAction(IRoomContext ctx, Queue<BaseCard> hasCards, BaseCard card) {
         fireAction(ctx, hasCards, card);
     }
     
-    public void fireAction(RoomContext ctx, Queue<BaseCard> hasCards, BaseCard card) {
+    public void fireAction(IRoomContext ctx, Queue<BaseCard> hasCards, BaseCard card) {
         if (this.next != null) {
             this.next.doAction(ctx, hasCards, card);
         }

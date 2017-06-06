@@ -6,16 +6,16 @@
 package com.benai.mahjong.action;
 
 import com.benai.mahjong.card.BaseCard;
-import com.benai.mahjong.room.RoomContext;
 import java.util.Queue;
+import com.benai.mahjong.room.IRoomContext;
 
 /**
  *
  * @author gongbenkai
  */
-public interface ActionHandler {
+public interface IActionHandler {
     
-    RoomContext getContext();
-    ActionHandler next();
-    void doAction(RoomContext ctx, Queue<BaseCard> hasCards, BaseCard card);
+    IRoomContext getContext();
+    IActionHandler next();
+    void doAction(IRoomContext ctx, Queue<BaseCard> hasCards, BaseCard card);
 }

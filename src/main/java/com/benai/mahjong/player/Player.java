@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.room;
+package com.benai.mahjong.player;
+
+import com.benai.mahjong.card.ICard;
+import java.util.List;
+import lombok.Data;
 
 /**
  *
  * @author gongbenkai
  */
-public interface RoomContext {
-    
+@Data
+public class Player implements IPlayer {
+    private List<ICard> cards;
 }
