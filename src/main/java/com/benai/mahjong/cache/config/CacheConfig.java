@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.netty.config;
+package com.benai.mahjong.cache.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,11 +13,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author gongbenkai
  */
 @Data
-@ConfigurationProperties(prefix = "server")
-public class ServerConfig {
+@ConfigurationProperties(prefix = "cache")
+public class CacheConfig {
 
-    private String port;
-    private String httpPort;
-
+    private Integer fast;
+    private Integer slow;
+    private Integer middle;
 
 }

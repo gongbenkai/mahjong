@@ -12,23 +12,26 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.Data;
 
+
 /**
  *
  * @author gongbenkai
  */
 @Data
-public class Room {
+public class Room implements IRoom {
 
     private final String uuid;
     private final String code;
     private final String areaCode; //区域代码 
 
     private List<ICard> cards; //所有剩余牌
+    
 
     public Room(String code, String areaCode) {
         this.uuid = UUID.randomUUID().toString();
         this.code = code;
         this.areaCode = areaCode;
+        
     }
     
     public void putCardsToRoom(ArrayList<ICard> orgCards) {

@@ -1,28 +1,21 @@
 # Server settings
 server:
-    port: 8044
-    #address: localhost
-    tomcat:
-        basedir: /letv/sylvanas
-        access-log-enabled: true
-        access-log-pattern: "%h %l %u %t \"%r\" %s %b %D" 
-        max-threads: 500
-        uri-encoding: UTF-8 
+    port: 6006
+      
 
 # DATASOURCE
 jdbc:
     #dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
     dataSourceClassName: com.mysql.jdbc.Driver
-    #url: jdbc:mysql://117.121.54.244:3464/game_center?useUnicode=true&amp;characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-    url: jdbc:mysql://10.140.45.249:3464/game_center?useUnicode=true&amp;characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-    username: game_center_w
-    password: knt8YN1wmcfwOlheGeYn
+    url: jdbc:mysql://10.154.157.46/game_center?useUnicode=true&amp;characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: tvgc
+    password: tvcldqsr203awd
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
     useServerPrepStmts: true
-    minimumIdle: 5
-    maximumPoolSize: 50
+    minimumIdle: 1
+    maximumPoolSize: 2
 
 # SPRING PROFILES
 spring:       
@@ -30,17 +23,19 @@ spring:
     #mvc.favicon.enabled: false
     #resources.add-mappings: true
     application:
-        name: sylvanas
+        name: benaiMahjong
     boot:
         admin:
             url: http://localhost:${server.port}
     jackson:
         serialization:
-            indent_output: true    
+            indent_output: true
+            
     http:
         encoding.charset: UTF-8
         encoding.enable: true
         encoding.force: true
+        
     messages:
         basename: locale/messages
         cache-seconds: 3600
@@ -49,15 +44,14 @@ spring:
     redis:
         database: 3
         databaseauth: 0
-        #host: 117.121.2.139
-        password: tvgc
-        #port: 6379 
+        host: 117.121.2.139
+        password: Hz%qsdmzjlqh6
+        port: 6379
         pool.max-idle: 8 
         pool.min-idle: 5
         pool.max-active: 50
         pool.max-wait: 1000
-        sentinel.master: mymaster
-        sentinel.nodes: 10.185.28.22:26379,10.185.29.80:26379,10.185.31.8:26379,10.129.29.104:26379,10.129.29.108:26379
+
 endpoints:
     health:
         enabled: true
@@ -66,29 +60,3 @@ endpoints:
 mybatis:
     typeAliasesPackage: com.letv.tvgc.sylvanas.dao.model
     configLocation: classpath:/conf/mybatis-config.xml
-    
-sso:
-    host: api.zhifu.letv.com
-    key: 53498a5f4dd62b3450ae9c5df9493865
-    checktvtoken: http://api.sso.le.com/api/checkTvToken/token/
-
-setconf:
-    v4Version: 4.0.1
-    
-tvcloud:
-    #http://beta.internal.scloud.letv.com/device/manager/api/v1/tvcustom?mac=c80e77ec97a6
-    gettvclassurl: http://internal.scloud.letv.com/device/manager/api/v1/tvcustom
-    
-hades:
-    paymentTypesV2: http://hades.letvstore.com/hades/api/paymentTypes/v2
-    
-cache:
-    #600 10分钟
-    fast: 600
-    #86400 24小时
-    middle: 86400
-    #7天
-    slow: 604800
-
-task:
-    ranktask: 0

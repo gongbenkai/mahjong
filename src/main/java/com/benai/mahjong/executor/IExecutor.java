@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.room;
+package com.benai.mahjong.executor;
 
 /**
  *
  * @author gongbenkai
  */
-public interface IRoomContext {
+public interface IExecutor <R, P> {
     
-    Room addRoom(Room room);
-    Room getRoom(String code);
+    R excutor(P p);
 }

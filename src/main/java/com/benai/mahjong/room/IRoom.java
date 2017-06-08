@@ -9,8 +9,6 @@ package com.benai.mahjong.room;
  *
  * @author gongbenkai
  */
-public interface IRoomContext {
+public interface IRoom {
     
-    Room addRoom(Room room);
-    Room getRoom(String code);
 }

@@ -1,22 +1,17 @@
 # Server settings
 server:
     port: 6006
-    
-    #address: localhost
-    tomcat:
-        basedir: /letv/sylvanas
-        access-log-enabled: true
-        access-log-pattern: "%h %l %u %t \"%r\" %s %b %D" 
-        max-threads: 500
-        uri-encoding: UTF-8     
+    httpPort: 8080
+      
+
 
 # DATASOURCE
 jdbc:
     #dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
     dataSourceClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://10.154.157.46/game_center?useUnicode=true&amp;characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-    username: tvgc
-    password: tvcldqsr203awd
+    url: jdbc:mysql://localhost/mahjong?useUnicode=true&amp;characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
     cachePrepStmts: true
     prepStmtCacheSize: 250
     prepStmtCacheSqlLimit: 2048
@@ -30,7 +25,7 @@ spring:
     #mvc.favicon.enabled: false
     #resources.add-mappings: true
     application:
-        name: sylvanas
+        name: benaiMahjong
     boot:
         admin:
             url: http://localhost:${server.port}
@@ -65,32 +60,15 @@ endpoints:
         sensitive: false
 # MyBatis
 mybatis:
-    typeAliasesPackage: com.letv.tvgc.sylvanas.dao.model
+    typeAliasesPackage: com.benai.mahjong.dao.model
     configLocation: classpath:/conf/mybatis-config.xml
     
-sso:
-    host: 10.154.250.9
-    #host: api.zhifu.letv.com
-    key: 53498a5f4dd62b3450ae9c5df9493865
-    checktvtoken: http://api.sso.le.com/api/checkTvToken/token/
-
-setconf:
-    v4Version: 4.0.1
-    
-tvcloud:
-    #http://beta.internal.scloud.letv.com/device/manager/api/v1/tvcustom?mac=c80e77ec97a6
-    gettvclassurl: http://internal.scloud.letv.com/device/manager/api/v1/tvcustom
-    
-hades:
-    paymentTypesV2: http://117.121.2.138:8080/hades/api/paymentTypes/v2
-    
 cache:
-    #600 10秒
-    fast: 10
+    #600 10分钟
+    fast: 600
     #86400 24小时
-    middle: 600
+    middle: 86400
     #7天
-    slow: 600
+    slow: 604800
     
-task:
-    ranktask: 1
+    

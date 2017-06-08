@@ -21,27 +21,20 @@ import org.springframework.stereotype.Component;
 
 import com.benai.mahjong.netty.config.ServerConfig;
 
-//import cpgame.demo.netty.ServerInitializer;
-/**
- * @project:	demo
- * @Title:	NettyServerStart.java
- * @Package:
- * @author: chenpeng
- * @email: 46731706@qq.com
- * @date:	2015年8月20日 下午2:36:20
- * @description:
- * @version:
- */
+
 @Component
 @EnableConfigurationProperties(ServerConfig.class)
-
 public class NettyServer implements ApplicationContextAware {
 
-    private Logger log = LoggerFactory.getLogger(NettyServer.class);
+    private final Logger log = LoggerFactory.getLogger(NettyServer.class);
 
-    private EventLoopGroup masters = new NioEventLoopGroup();
+    private final EventLoopGroup masters = new NioEventLoopGroup();
 
-    private EventLoopGroup workers = new NioEventLoopGroup();
+    private final EventLoopGroup workers = new NioEventLoopGroup();
+
+    private final EventLoopGroup httpMasters = new NioEventLoopGroup();
+
+    private final EventLoopGroup httpWorkers = new NioEventLoopGroup();
 
     @Resource
     private ServerConfig serverConfig;
@@ -50,17 +43,28 @@ public class NettyServer implements ApplicationContextAware {
 
     @PostConstruct
     public void start() {
-        ServerBootstrap bootstrap = new ServerBootstrap().group(masters, workers);
-        bootstrap = bootstrap.channel(NioServerSocketChannel.class);
+
+        try {
+            ServerBootstrap bootstrap = new ServerBootstrap().group(masters, workers);
+            bootstrap = bootstrap.channel(NioServerSocketChannel.class);
 //        bootstrap = bootstrap.option(ChannelOption.SO_BACKLOG, serverConfig.getBacklog());
 //        bootstrap = bootstrap.option(ChannelOption.TCP_NODELAY, serverConfig.isNodelay());
 //        bootstrap = bootstrap.option(ChannelOption.SO_KEEPALIVE, serverConfig.isKeepAlive());
-        bootstrap.childHandler(new NettyChannelInitializer());
-
-        try {
+            bootstrap.childHandler(new NettyChannelInitializer());
             ChannelFuture future = bootstrap.bind(Integer.valueOf(serverConfig.getPort())).sync();
             log.info("Netty Server started......");
+
+            ServerBootstrap httpBootstrap = new ServerBootstrap().group(httpMasters, httpWorkers);
+            httpBootstrap = httpBootstrap.channel(NioServerSocketChannel.class);
+//        bootstrap = bootstrap.option(ChannelOption.SO_BACKLOG, serverConfig.getBacklog());
+//        bootstrap = bootstrap.option(ChannelOption.TCP_NODELAY, serverConfig.isNodelay());
+//        bootstrap = bootstrap.option(ChannelOption.SO_KEEPALIVE, serverConfig.isKeepAlive());
+            httpBootstrap.childHandler(new NettyHttpChannelInitializer());
+            ChannelFuture httpFuture = httpBootstrap.bind(Integer.valueOf(serverConfig.getHttpPort())).sync();
+            log.info("Netty http Server started......");
+
             future.channel().closeFuture().sync();
+            httpFuture.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,8 +79,12 @@ public class NettyServer implements ApplicationContextAware {
         workers.shutdownGracefully();
         masters.shutdownGracefully();
 
+        httpWorkers.shutdownGracefully();
+        httpMasters.shutdownGracefully();
+
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext ctx)
             throws BeansException {
         NettyServer.ctx = ctx;
