@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author gongbenkai
  */
 @EnableConfigurationProperties(ExecutorConfig.class)
-@Component
+@Component("initExecutor")
 public class InitExecutor implements IExecutor{
     
     ExecutorService executor;
@@ -30,7 +30,12 @@ public class InitExecutor implements IExecutor{
     
     @PostConstruct
     public void init() {
-        executor = Executors.newFixedThreadPool(executorConfig.getInitThreads());
+        if (executorConfig.getInitThreads() != null && executorConfig.getInitThreads() > 0) {
+            executor = Executors.newFixedThreadPool(executorConfig.getInitThreads());
+        } else {
+            executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3 + 1);
+        }
+        
     }
 
     @Override

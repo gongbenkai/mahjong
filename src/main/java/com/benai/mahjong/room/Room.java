@@ -5,7 +5,10 @@
  */
 package com.benai.mahjong.room;
 
+import com.benai.mahjong.card.BaseCard;
 import com.benai.mahjong.card.ICard;
+import com.benai.mahjong.config.area.AreaConfig;
+import com.benai.mahjong.player.IPlayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +28,12 @@ public class Room implements IRoom {
     private final String areaCode; //区域代码 
 
     private List<ICard> cards; //所有剩余牌
+    private List<IPlayer> plays; //所有剩余牌
     
+    private IPlayer tokenPlayer; //目前拥有令牌玩家
+    
+    
+    private AreaConfig areaConfig;
 
     public Room(String code, String areaCode) {
         this.uuid = UUID.randomUUID().toString();
@@ -34,8 +42,9 @@ public class Room implements IRoom {
         
     }
     
-    public void putCardsToRoom(ArrayList<ICard> orgCards) {
-        cards = (ArrayList)orgCards.clone();
+    @Override
+    public void putCardsToRoom(List<BaseCard> orgCards) {
+        cards = (List)(((ArrayList)orgCards).clone());
     }
 
     public boolean hasCards() {

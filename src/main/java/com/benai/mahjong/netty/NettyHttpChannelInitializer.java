@@ -6,13 +6,13 @@
 package com.benai.mahjong.netty;
 
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
+import com.benai.mahjong.netty.http.HttpServerInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import java.util.List;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 
 /**
  *
@@ -24,12 +24,12 @@ public class NettyHttpChannelInitializer extends ChannelInitializer<SocketChanne
     protected void initChannel(SocketChannel channel) throws Exception {
 
         ChannelPipeline pipe = channel.pipeline();
-        pipe.addLast(new ByteToMessageDecoder() {
-            @Override
-            protected void decode(ChannelHandlerContext chc, ByteBuf bb, List<Object> list) throws Exception {
-                //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+        // server端发送的是httpResponse，所以要使用HttpResponseEncoder进行编码
+        pipe.addLast("encoder", new HttpResponseEncoder());
+        // server端接收到的是httpRequest，所以要使用HttpRequestDecoder进行解码
+        pipe.addLast("decoder", new HttpRequestDecoder());
+        pipe.addLast("aggregator", new HttpObjectAggregator(1048576));
+        pipe.addLast("handler", new HttpServerInboundHandler());
 
 
     }

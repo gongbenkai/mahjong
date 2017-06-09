@@ -32,9 +32,9 @@ public class NettyServer implements ApplicationContextAware {
 
     private final EventLoopGroup workers = new NioEventLoopGroup();
 
-    private final EventLoopGroup httpMasters = new NioEventLoopGroup();
+    private final EventLoopGroup httpMasters = new NioEventLoopGroup(1);
 
-    private final EventLoopGroup httpWorkers = new NioEventLoopGroup();
+    private final EventLoopGroup httpWorkers = new NioEventLoopGroup(2);
 
     @Resource
     private ServerConfig serverConfig;

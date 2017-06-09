@@ -70,5 +70,10 @@ cache:
     middle: 86400
     #7天
     slow: 604800
+
+executor:
+    initThreads: 2
+    actionThreads: 2
+    huThreads: 4
     
     

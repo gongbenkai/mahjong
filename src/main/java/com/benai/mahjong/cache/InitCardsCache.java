@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * @author gongbenkai
  */
 @EnableConfigurationProperties(CacheConfig.class)
-@Component
+@Component("initCardsCache")
 public class InitCardsCache implements CacheInterface<Integer, List<BaseCard>> {
 
     private static final Logger log = LoggerFactory.getLogger(InitCardsCache.class);
