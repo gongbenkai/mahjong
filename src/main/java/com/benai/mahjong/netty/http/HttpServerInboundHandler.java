@@ -5,8 +5,10 @@
  */
 package com.benai.mahjong.netty.http;
 
+import com.benai.mahjong.zookeeper.ZookeeperCli;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -16,11 +18,15 @@ import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import io.netty.handler.codec.http.HttpUtil;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.util.AsciiString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author gongbenkai
  */
+@Component
+@Sharable
 public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
     private static final byte[] CONTENT = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
 
@@ -28,6 +34,9 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
     private static final AsciiString CONTENT_LENGTH = new AsciiString("Content-Length");
     private static final AsciiString CONNECTION = new AsciiString("Connection");
     private static final AsciiString KEEP_ALIVE = new AsciiString("keep-alive");
+    
+    @Autowired
+    ZookeeperCli zookeeperCli;
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
@@ -38,6 +47,10 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof HttpRequest) {
             HttpRequest req = (HttpRequest) msg;
+            
+            if (!zookeeperCli.isExists(req.uri())) {
+                zookeeperCli.createZNode(req.uri(), "{server:test,flg:true}");
+            }
 
             boolean keepAlive = HttpUtil.isKeepAlive(req);
             FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(CONTENT));

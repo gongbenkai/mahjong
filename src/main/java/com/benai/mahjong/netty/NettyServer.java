@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -24,7 +23,7 @@ import com.benai.mahjong.netty.config.ServerConfig;
 
 @Component
 @EnableConfigurationProperties(ServerConfig.class)
-public class NettyServer implements ApplicationContextAware {
+public class NettyServer { //implements ApplicationContextAware 
 
     private final Logger log = LoggerFactory.getLogger(NettyServer.class);
 
@@ -32,14 +31,18 @@ public class NettyServer implements ApplicationContextAware {
 
     private final EventLoopGroup workers = new NioEventLoopGroup();
 
-    private final EventLoopGroup httpMasters = new NioEventLoopGroup(1);
-
-    private final EventLoopGroup httpWorkers = new NioEventLoopGroup(2);
+//    private final EventLoopGroup httpMasters = new NioEventLoopGroup(1);
+//
+//    private final EventLoopGroup httpWorkers = new NioEventLoopGroup(2);
 
     @Resource
     private ServerConfig serverConfig;
 
     private static ApplicationContext ctx;
+    
+//    @Autowired
+//    NettyHttpChannelInitializer nettyHttpChannelInitializer;
+    
 
     @PostConstruct
     public void start() {
@@ -54,17 +57,17 @@ public class NettyServer implements ApplicationContextAware {
             ChannelFuture future = bootstrap.bind(Integer.valueOf(serverConfig.getPort())).sync();
             log.info("Netty Server started......");
 
-            ServerBootstrap httpBootstrap = new ServerBootstrap().group(httpMasters, httpWorkers);
-            httpBootstrap = httpBootstrap.channel(NioServerSocketChannel.class);
-//        bootstrap = bootstrap.option(ChannelOption.SO_BACKLOG, serverConfig.getBacklog());
-//        bootstrap = bootstrap.option(ChannelOption.TCP_NODELAY, serverConfig.isNodelay());
-//        bootstrap = bootstrap.option(ChannelOption.SO_KEEPALIVE, serverConfig.isKeepAlive());
-            httpBootstrap.childHandler(new NettyHttpChannelInitializer());
-            ChannelFuture httpFuture = httpBootstrap.bind(Integer.valueOf(serverConfig.getHttpPort())).sync();
-            log.info("Netty http Server started......");
+//            ServerBootstrap httpBootstrap = new ServerBootstrap().group(httpMasters, httpWorkers);
+//            httpBootstrap = httpBootstrap.channel(NioServerSocketChannel.class);
+////        bootstrap = bootstrap.option(ChannelOption.SO_BACKLOG, serverConfig.getBacklog());
+////        bootstrap = bootstrap.option(ChannelOption.TCP_NODELAY, serverConfig.isNodelay());
+////        bootstrap = bootstrap.option(ChannelOption.SO_KEEPALIVE, serverConfig.isKeepAlive());
+//            httpBootstrap.childHandler(nettyHttpChannelInitializer);
+//            ChannelFuture httpFuture = httpBootstrap.bind(Integer.valueOf(serverConfig.getHttpPort())).sync();
+//            log.info("Netty http Server started......");
 
             future.channel().closeFuture().sync();
-            httpFuture.channel().closeFuture().sync();
+//            httpFuture.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -78,22 +81,22 @@ public class NettyServer implements ApplicationContextAware {
 
         workers.shutdownGracefully();
         masters.shutdownGracefully();
-
-        httpWorkers.shutdownGracefully();
-        httpMasters.shutdownGracefully();
+//
+//        httpWorkers.shutdownGracefully();
+//        httpMasters.shutdownGracefully();
 
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext ctx)
-            throws BeansException {
-        NettyServer.ctx = ctx;
-        String[] all = ctx.getBeanNamesForAnnotation(Component.class);
-        for (String n : all) {
-            log.info(n);
-        }
-//        log.info(getBean("ifpControlProcessor").getClass().getName());
-    }
+//    @Override
+//    public void setApplicationContext(ApplicationContext ctx)
+//            throws BeansException {
+//        NettyServer.ctx = ctx;
+//        String[] all = ctx.getBeanNamesForAnnotation(Component.class);
+//        for (String n : all) {
+//            log.info(n);
+//        }
+////        log.info(getBean("ifpControlProcessor").getClass().getName());
+//    }
 
     public static Object getBean(String id) {
         return ctx.getBean(id);

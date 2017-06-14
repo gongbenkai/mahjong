@@ -13,13 +13,19 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author gongbenkai
  */
+@Component
 public class NettyHttpChannelInitializer extends ChannelInitializer<SocketChannel> {
 
+    @Autowired
+    HttpServerInboundHandler httpServerInboundHandler;
+    
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
 
@@ -29,7 +35,7 @@ public class NettyHttpChannelInitializer extends ChannelInitializer<SocketChanne
         // server端接收到的是httpRequest，所以要使用HttpRequestDecoder进行解码
         pipe.addLast("decoder", new HttpRequestDecoder());
         pipe.addLast("aggregator", new HttpObjectAggregator(1048576));
-        pipe.addLast("handler", new HttpServerInboundHandler());
+        pipe.addLast("handler", httpServerInboundHandler);
 
 
     }

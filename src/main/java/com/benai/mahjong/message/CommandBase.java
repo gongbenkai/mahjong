@@ -14,28 +14,42 @@ public final class CommandBase {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface MessageNameOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:base.MessageName)
+  public interface CommonMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:base.CommonMessage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint32 message_field = 1;</code>
+     * <pre>
+     * 命令ID
+     * </pre>
+     *
+     * <code>int32 cmdId = 1;</code>
      */
-    int getMessageField();
+    int getCmdId();
+
+    /**
+     * <pre>
+     * 消息体数据
+     * </pre>
+     *
+     * <code>bytes data = 2;</code>
+     */
+    com.google.protobuf.ByteString getData();
   }
   /**
-   * Protobuf type {@code base.MessageName}
+   * Protobuf type {@code base.CommonMessage}
    */
-  public  static final class MessageName extends
+  public  static final class CommonMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:base.MessageName)
-      MessageNameOrBuilder {
-    // Use MessageName.newBuilder() to construct.
-    private MessageName(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:base.CommonMessage)
+      CommonMessageOrBuilder {
+    // Use CommonMessage.newBuilder() to construct.
+    private CommonMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private MessageName() {
-      messageField_ = 0;
+    private CommonMessage() {
+      cmdId_ = 0;
+      data_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -43,7 +57,7 @@ public final class CommandBase {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private MessageName(
+    private CommonMessage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -65,7 +79,12 @@ public final class CommandBase {
             }
             case 8: {
 
-              messageField_ = input.readUInt32();
+              cmdId_ = input.readInt32();
+              break;
+            }
+            case 18: {
+
+              data_ = input.readBytes();
               break;
             }
           }
@@ -81,23 +100,40 @@ public final class CommandBase {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.benai.mahjong.message.CommandBase.internal_static_base_MessageName_descriptor;
+      return com.benai.mahjong.message.CommandBase.internal_static_base_CommonMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.benai.mahjong.message.CommandBase.internal_static_base_MessageName_fieldAccessorTable
+      return com.benai.mahjong.message.CommandBase.internal_static_base_CommonMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.benai.mahjong.message.CommandBase.MessageName.class, com.benai.mahjong.message.CommandBase.MessageName.Builder.class);
+              com.benai.mahjong.message.CommandBase.CommonMessage.class, com.benai.mahjong.message.CommandBase.CommonMessage.Builder.class);
     }
 
-    public static final int MESSAGE_FIELD_FIELD_NUMBER = 1;
-    private int messageField_;
+    public static final int CMDID_FIELD_NUMBER = 1;
+    private int cmdId_;
     /**
-     * <code>uint32 message_field = 1;</code>
+     * <pre>
+     * 命令ID
+     * </pre>
+     *
+     * <code>int32 cmdId = 1;</code>
      */
-    public int getMessageField() {
-      return messageField_;
+    public int getCmdId() {
+      return cmdId_;
+    }
+
+    public static final int DATA_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString data_;
+    /**
+     * <pre>
+     * 消息体数据
+     * </pre>
+     *
+     * <code>bytes data = 2;</code>
+     */
+    public com.google.protobuf.ByteString getData() {
+      return data_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -112,8 +148,11 @@ public final class CommandBase {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (messageField_ != 0) {
-        output.writeUInt32(1, messageField_);
+      if (cmdId_ != 0) {
+        output.writeInt32(1, cmdId_);
+      }
+      if (!data_.isEmpty()) {
+        output.writeBytes(2, data_);
       }
     }
 
@@ -122,9 +161,13 @@ public final class CommandBase {
       if (size != -1) return size;
 
       size = 0;
-      if (messageField_ != 0) {
+      if (cmdId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, messageField_);
+          .computeInt32Size(1, cmdId_);
+      }
+      if (!data_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, data_);
       }
       memoizedSize = size;
       return size;
@@ -136,14 +179,16 @@ public final class CommandBase {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.benai.mahjong.message.CommandBase.MessageName)) {
+      if (!(obj instanceof com.benai.mahjong.message.CommandBase.CommonMessage)) {
         return super.equals(obj);
       }
-      com.benai.mahjong.message.CommandBase.MessageName other = (com.benai.mahjong.message.CommandBase.MessageName) obj;
+      com.benai.mahjong.message.CommandBase.CommonMessage other = (com.benai.mahjong.message.CommandBase.CommonMessage) obj;
 
       boolean result = true;
-      result = result && (getMessageField()
-          == other.getMessageField());
+      result = result && (getCmdId()
+          == other.getCmdId());
+      result = result && getData()
+          .equals(other.getData());
       return result;
     }
 
@@ -154,76 +199,78 @@ public final class CommandBase {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + MESSAGE_FIELD_FIELD_NUMBER;
-      hash = (53 * hash) + getMessageField();
+      hash = (37 * hash) + CMDID_FIELD_NUMBER;
+      hash = (53 * hash) + getCmdId();
+      hash = (37 * hash) + DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(byte[] data)
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(java.io.InputStream input)
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseDelimitedFrom(java.io.InputStream input)
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseDelimitedFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.benai.mahjong.message.CommandBase.MessageName parseFrom(
+    public static com.benai.mahjong.message.CommandBase.CommonMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -235,7 +282,7 @@ public final class CommandBase {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.benai.mahjong.message.CommandBase.MessageName prototype) {
+    public static Builder newBuilder(com.benai.mahjong.message.CommandBase.CommonMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -250,25 +297,25 @@ public final class CommandBase {
       return builder;
     }
     /**
-     * Protobuf type {@code base.MessageName}
+     * Protobuf type {@code base.CommonMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:base.MessageName)
-        com.benai.mahjong.message.CommandBase.MessageNameOrBuilder {
+        // @@protoc_insertion_point(builder_implements:base.CommonMessage)
+        com.benai.mahjong.message.CommandBase.CommonMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.benai.mahjong.message.CommandBase.internal_static_base_MessageName_descriptor;
+        return com.benai.mahjong.message.CommandBase.internal_static_base_CommonMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.benai.mahjong.message.CommandBase.internal_static_base_MessageName_fieldAccessorTable
+        return com.benai.mahjong.message.CommandBase.internal_static_base_CommonMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.benai.mahjong.message.CommandBase.MessageName.class, com.benai.mahjong.message.CommandBase.MessageName.Builder.class);
+                com.benai.mahjong.message.CommandBase.CommonMessage.class, com.benai.mahjong.message.CommandBase.CommonMessage.Builder.class);
       }
 
-      // Construct using com.benai.mahjong.message.CommandBase.MessageName.newBuilder()
+      // Construct using com.benai.mahjong.message.CommandBase.CommonMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -285,31 +332,34 @@ public final class CommandBase {
       }
       public Builder clear() {
         super.clear();
-        messageField_ = 0;
+        cmdId_ = 0;
+
+        data_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.benai.mahjong.message.CommandBase.internal_static_base_MessageName_descriptor;
+        return com.benai.mahjong.message.CommandBase.internal_static_base_CommonMessage_descriptor;
       }
 
-      public com.benai.mahjong.message.CommandBase.MessageName getDefaultInstanceForType() {
-        return com.benai.mahjong.message.CommandBase.MessageName.getDefaultInstance();
+      public com.benai.mahjong.message.CommandBase.CommonMessage getDefaultInstanceForType() {
+        return com.benai.mahjong.message.CommandBase.CommonMessage.getDefaultInstance();
       }
 
-      public com.benai.mahjong.message.CommandBase.MessageName build() {
-        com.benai.mahjong.message.CommandBase.MessageName result = buildPartial();
+      public com.benai.mahjong.message.CommandBase.CommonMessage build() {
+        com.benai.mahjong.message.CommandBase.CommonMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.benai.mahjong.message.CommandBase.MessageName buildPartial() {
-        com.benai.mahjong.message.CommandBase.MessageName result = new com.benai.mahjong.message.CommandBase.MessageName(this);
-        result.messageField_ = messageField_;
+      public com.benai.mahjong.message.CommandBase.CommonMessage buildPartial() {
+        com.benai.mahjong.message.CommandBase.CommonMessage result = new com.benai.mahjong.message.CommandBase.CommonMessage(this);
+        result.cmdId_ = cmdId_;
+        result.data_ = data_;
         onBuilt();
         return result;
       }
@@ -341,18 +391,21 @@ public final class CommandBase {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.benai.mahjong.message.CommandBase.MessageName) {
-          return mergeFrom((com.benai.mahjong.message.CommandBase.MessageName)other);
+        if (other instanceof com.benai.mahjong.message.CommandBase.CommonMessage) {
+          return mergeFrom((com.benai.mahjong.message.CommandBase.CommonMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.benai.mahjong.message.CommandBase.MessageName other) {
-        if (other == com.benai.mahjong.message.CommandBase.MessageName.getDefaultInstance()) return this;
-        if (other.getMessageField() != 0) {
-          setMessageField(other.getMessageField());
+      public Builder mergeFrom(com.benai.mahjong.message.CommandBase.CommonMessage other) {
+        if (other == com.benai.mahjong.message.CommandBase.CommonMessage.getDefaultInstance()) return this;
+        if (other.getCmdId() != 0) {
+          setCmdId(other.getCmdId());
+        }
+        if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+          setData(other.getData());
         }
         onChanged();
         return this;
@@ -366,11 +419,11 @@ public final class CommandBase {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.benai.mahjong.message.CommandBase.MessageName parsedMessage = null;
+        com.benai.mahjong.message.CommandBase.CommonMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.benai.mahjong.message.CommandBase.MessageName) e.getUnfinishedMessage();
+          parsedMessage = (com.benai.mahjong.message.CommandBase.CommonMessage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -380,28 +433,81 @@ public final class CommandBase {
         return this;
       }
 
-      private int messageField_ ;
+      private int cmdId_ ;
       /**
-       * <code>uint32 message_field = 1;</code>
+       * <pre>
+       * 命令ID
+       * </pre>
+       *
+       * <code>int32 cmdId = 1;</code>
        */
-      public int getMessageField() {
-        return messageField_;
+      public int getCmdId() {
+        return cmdId_;
       }
       /**
-       * <code>uint32 message_field = 1;</code>
+       * <pre>
+       * 命令ID
+       * </pre>
+       *
+       * <code>int32 cmdId = 1;</code>
        */
-      public Builder setMessageField(int value) {
+      public Builder setCmdId(int value) {
         
-        messageField_ = value;
+        cmdId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint32 message_field = 1;</code>
+       * <pre>
+       * 命令ID
+       * </pre>
+       *
+       * <code>int32 cmdId = 1;</code>
        */
-      public Builder clearMessageField() {
+      public Builder clearCmdId() {
         
-        messageField_ = 0;
+        cmdId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * 消息体数据
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       */
+      public com.google.protobuf.ByteString getData() {
+        return data_;
+      }
+      /**
+       * <pre>
+       * 消息体数据
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       */
+      public Builder setData(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        data_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 消息体数据
+       * </pre>
+       *
+       * <code>bytes data = 2;</code>
+       */
+      public Builder clearData() {
+        
+        data_ = getDefaultInstance().getData();
         onChanged();
         return this;
       }
@@ -416,49 +522,49 @@ public final class CommandBase {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:base.MessageName)
+      // @@protoc_insertion_point(builder_scope:base.CommonMessage)
     }
 
-    // @@protoc_insertion_point(class_scope:base.MessageName)
-    private static final com.benai.mahjong.message.CommandBase.MessageName DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:base.CommonMessage)
+    private static final com.benai.mahjong.message.CommandBase.CommonMessage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.benai.mahjong.message.CommandBase.MessageName();
+      DEFAULT_INSTANCE = new com.benai.mahjong.message.CommandBase.CommonMessage();
     }
 
-    public static com.benai.mahjong.message.CommandBase.MessageName getDefaultInstance() {
+    public static com.benai.mahjong.message.CommandBase.CommonMessage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<MessageName>
-        PARSER = new com.google.protobuf.AbstractParser<MessageName>() {
-      public MessageName parsePartialFrom(
+    private static final com.google.protobuf.Parser<CommonMessage>
+        PARSER = new com.google.protobuf.AbstractParser<CommonMessage>() {
+      public CommonMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MessageName(input, extensionRegistry);
+          return new CommonMessage(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<MessageName> parser() {
+    public static com.google.protobuf.Parser<CommonMessage> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<MessageName> getParserForType() {
+    public com.google.protobuf.Parser<CommonMessage> getParserForType() {
       return PARSER;
     }
 
-    public com.benai.mahjong.message.CommandBase.MessageName getDefaultInstanceForType() {
+    public com.benai.mahjong.message.CommandBase.CommonMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_base_MessageName_descriptor;
+    internal_static_base_CommonMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_base_MessageName_fieldAccessorTable;
+      internal_static_base_CommonMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -468,9 +574,10 @@ public final class CommandBase {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021CommandBase.proto\022\004base\"$\n\013MessageName" +
-      "\022\025\n\rmessage_field\030\001 \001(\rB(\n\031com.benai.mah" +
-      "jong.messageB\013CommandBaseb\006proto3"
+      "\n\021CommandBase.proto\022\004base\",\n\rCommonMessa" +
+      "ge\022\r\n\005cmdId\030\001 \001(\005\022\014\n\004data\030\002 \001(\014B(\n\031com.b" +
+      "enai.mahjong.messageB\013CommandBaseb\006proto" +
+      "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -484,12 +591,12 @@ public final class CommandBase {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_base_MessageName_descriptor =
+    internal_static_base_CommonMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_base_MessageName_fieldAccessorTable = new
+    internal_static_base_CommonMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_base_MessageName_descriptor,
-        new java.lang.String[] { "MessageField", });
+        internal_static_base_CommonMessage_descriptor,
+        new java.lang.String[] { "CmdId", "Data", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

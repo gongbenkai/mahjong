@@ -5,32 +5,32 @@
  */
 package com.benai.mahjong.netty;
 
-
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
+import com.benai.mahjong.message.CommandBase;
+import com.benai.mahjong.netty.hanlder.ProtobufInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import java.util.List;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 /**
  *
  * @author gongbenkai
  */
-public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
 
+public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
+    
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
 
         ChannelPipeline pipe = channel.pipeline();
-        pipe.addLast(new ByteToMessageDecoder() {
-            @Override
-            protected void decode(ChannelHandlerContext chc, ByteBuf bb, List<Object> list) throws Exception {
-                //To change body of generated methods, choose Tools | Templates.
-            }
-        });
-
+        pipe.addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
+        pipe.addLast("protobufDecoder", new ProtobufDecoder(CommandBase.CommonMessage.getDefaultInstance()));
+        pipe.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());
+        pipe.addLast("protobufEncoder", new ProtobufEncoder());
+        pipe.addLast("handler", new ProtobufInboundHandler());
 
     }
 

@@ -5,10 +5,16 @@
  */
 package com.benai.mahjong.utils;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  *
  * @author gongbenkai
  */
 public class RandomUtil {
+    
+    public static String random6D() {
+        return String.format("%06d", ThreadLocalRandom.current().nextInt(1000000));
+    }
     
 }
