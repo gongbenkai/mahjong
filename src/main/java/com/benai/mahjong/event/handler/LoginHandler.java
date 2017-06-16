@@ -5,22 +5,30 @@
  */
 package com.benai.mahjong.event.handler;
 
+import com.benai.mahjong.cache.CacheInterface;
+import com.benai.mahjong.game.handler.init.IInitHandler;
 import com.benai.mahjong.message.CommandBase;
 import com.benai.mahjong.netty.hanlder.IConContext;
 import com.benai.mahjong.utils.RandomUtil;
 import com.benai.mahjong.zookeeper.ZookeeperCli;
+import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author gongbenkai
  */
-@Component
+@Service
 public class LoginHandler implements IEventHandler{
 
     @Autowired
     ZookeeperCli zookeeperCli;
+    
+    @Autowired
+    @Qualifier("initHandlerCache")
+    CacheInterface<Integer, IInitHandler> initHandlerCache;
     
     @Override
     public void doEvent(CommandBase.CommonMessage msg, IConContext ctx) {
@@ -39,7 +47,8 @@ public class LoginHandler implements IEventHandler{
 
     // 创建房间
     private void createRoom(CommandBase.CommonMessage msg, IConContext ctx) {
-        
+        IInitHandler handler = initHandlerCache.getKey(100000);
+        handler.doHandler(null, null);
         while (true) {
             String path = "/mahjong/room/" + RandomUtil.random6D();
             if (!zookeeperCli.isExists(path)) {

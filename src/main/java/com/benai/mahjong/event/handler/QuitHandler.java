@@ -7,13 +7,13 @@ package com.benai.mahjong.event.handler;
 
 import com.benai.mahjong.message.CommandBase;
 import com.benai.mahjong.netty.hanlder.IConContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author gongbenkai
  */
-@Component
+@Service
 public class QuitHandler implements IEventHandler{
 
     @Override

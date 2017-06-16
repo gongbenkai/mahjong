@@ -18,26 +18,22 @@ import org.springframework.stereotype.Component;
  * @author gongbenkai
  */
 @Component
-public class EventHandlerFactory  { //implements ApplicationContextAware
+public class EventHandlerFactory  { 
 
-//    private static ApplicationContext ctx;
-    private static Map<Integer, IEventHandler> handlerMaps;
+    private static final Map<Integer, IEventHandler> handlerMaps = new HashMap<>();
     
     @Autowired
     private List<IEventHandler> handlers;
 
-//    @Override
+
     @PostConstruct
-    public void setApplicationContext() throws BeansException {
-//        EventHandlerFactory.ctx = ac;
-        handlerMaps = new HashMap<>();
+    public void init() {
         // 根据handler包含的cmd id，对应出每个cmd对应的handler
-        handlers.stream().forEach((handler) -> {
+        handlers.stream().forEach((IEventHandler handler) -> {
             for(Integer cmdId : handler.getCmdids()) {
                 handlerMaps.put(cmdId, handler);
             }
         });
-        
 
     }
     

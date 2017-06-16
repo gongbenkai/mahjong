@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.executor;
+package com.benai.mahjong.game.handler.play.gang;
+
+import com.benai.mahjong.game.handler.play.chi.*;
+import com.benai.mahjong.game.handler.init.*;
 
 /**
  *
  * @author gongbenkai
  */
-public interface IExecutor <R, P> {
+public interface IGangChiHandler {
     
-    R excutor(P p);
 }

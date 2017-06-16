@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.handler;
+package com.benai.mahjong.game.handler.init;
+
+import com.benai.mahjong.player.IPlayer;
+import com.benai.mahjong.room.IRoom;
 
 /**
  *
  * @author gongbenkai
  */
-public class NewClass {
-    
+public interface IInitHandler {
+    boolean doHandler(IRoom room, IPlayer player);
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.handler.init;
+package com.benai.mahjong.game.handler.play.chi;
 
 import com.benai.mahjong.cache.CacheInterface;
 import com.benai.mahjong.card.BaseCard;
@@ -11,14 +11,14 @@ import com.benai.mahjong.player.IPlayer;
 import com.benai.mahjong.room.IRoom;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author gongbenkai
  */
-@Component("initHandler")
-public class InitHandler implements IInitHandler{
+@Controller
+public class ChiHandler implements IPlayChiHandler{
     
     @Autowired
     CacheInterface<Integer, List<BaseCard>> initCardsCache;

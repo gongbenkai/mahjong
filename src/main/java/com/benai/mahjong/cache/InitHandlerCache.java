@@ -6,15 +6,14 @@
 package com.benai.mahjong.cache;
 
 import com.benai.mahjong.cache.config.CacheConfig;
-import com.benai.mahjong.card.BaseCard;
-import com.benai.mahjong.dao.mapper.CardMapper;
-import com.benai.mahjong.netty.config.ServerConfig;
+import com.benai.mahjong.dao.mapper.HandlerMapper;
+import com.benai.mahjong.game.handler.init.IInitHandler;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
@@ -31,34 +30,37 @@ import org.springframework.stereotype.Component;
  */
 @EnableConfigurationProperties(CacheConfig.class)
 @Component
-public class InitCardsCache implements CacheInterface<Integer, List<BaseCard>> {
+public class InitHandlerCache implements CacheInterface<Integer, IInitHandler> {
 
-    private static final Logger log = LoggerFactory.getLogger(InitCardsCache.class);
+    private static final Logger log = LoggerFactory.getLogger(InitHandlerCache.class);
 
-    LoadingCache<Integer, List<BaseCard>> activetyCache;
+    LoadingCache<Integer, IInitHandler> cache;
 
     @Resource
     private CacheConfig cacheConfig;
 
     @Autowired
-    CardMapper cardMapper;
+    private HandlerMapper handlerMapper;
+    
+    @Autowired
+    private Map<String, IInitHandler> handlers;
 
     @PostConstruct
     public void init() {
-        activetyCache = CacheBuilder.newBuilder()
+        cache = CacheBuilder.newBuilder()
                 .expireAfterAccess(cacheConfig.getSlow(), TimeUnit.MINUTES).maximumSize(200).removalListener(new RemovalListener<Object, Object>() {
             @Override
             public void onRemoval(RemovalNotification<Object, Object> notification) {
-                log.info("get InitCardsCache Listener {} was removed, cause is {} ", notification.getKey(), notification.getCause());
+                log.info("get InitHandlerCache Listener {} was removed, cause is {} ", notification.getKey(), notification.getCause());
             }
-        }).recordStats().build(new CacheLoader<Integer, List<BaseCard>>() {
+        }).recordStats().build(new CacheLoader<Integer, IInitHandler>() {
             @Override
-            public List<BaseCard> load(Integer key) throws ExecutionException {
+            public IInitHandler load(Integer key) throws ExecutionException {
 
                 try {
-                    return cardMapper.getInitCardsByCode(key);
+                    return handlers.get(handlerMapper.getInitHandler(key));
                 } catch (Exception ex) {
-                    log.error("get InitCardsCache load error {}", ex);
+                    log.error("get InitHandlerCache load error {}", ex);
                 }
                 return null;
             }
@@ -66,18 +68,18 @@ public class InitCardsCache implements CacheInterface<Integer, List<BaseCard>> {
     }
 
     @Override
-    public List<BaseCard> getKey(Integer key) {
+    public IInitHandler getKey(Integer key) {
         try {
-            return activetyCache.get(key);
+            return cache.get(key);
         } catch (Exception ex) {
-            log.error("get InitCardsCache not find data {}", ex);
+            log.error("get InitHandlerCache not find data {}", ex);
             return null;
         }
     }
 
     @Override
     public void invalidate(Object key) {
-        activetyCache.invalidate(key);
+        cache.invalidate(key);
     }
 
 }

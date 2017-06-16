@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.benai.mahjong.handler.init;
+package com.benai.mahjong.executor;
 
 /**
  *
  * @author gongbenkai
  */
-public interface IInitHandler {
+public interface IHandlerExecutor  {
     
+    void execute(Runnable command);
 }
