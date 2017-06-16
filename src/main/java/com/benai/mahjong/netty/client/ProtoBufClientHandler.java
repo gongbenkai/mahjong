@@ -24,7 +24,8 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter{
 //        CommandBase.CommonMessage.Builder builder = CommandBase.CommonMessage.newBuilder();  
 //        builder.setCmdId(1000);  
 // 
-//        ctx.writeAndFlush(builder.build());  
+//        ctx.writeAndFlush(builder.build());
+        ctx.fireChannelActive();
     }  
   
   
