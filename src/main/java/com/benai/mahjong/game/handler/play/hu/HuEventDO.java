@@ -5,14 +5,13 @@
  */
 package com.benai.mahjong.game.handler.play.hu;
 
-import com.benai.mahjong.game.handler.play.gang.*;
-import com.benai.mahjong.game.handler.play.chi.*;
-import com.benai.mahjong.game.handler.init.*;
+import lombok.Data;
 
 /**
  *
  * @author gongbenkai
  */
-public interface IHuChiHandler {
-    
+@Data
+public class HuEventDO {
+    private int multiple = 1; //胡牌倍数
 }

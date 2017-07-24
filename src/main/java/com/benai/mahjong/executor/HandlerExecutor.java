@@ -31,7 +31,7 @@ public class HandlerExecutor implements IHandlerExecutor{
         if (executorConfig.getInitThreads() != null && executorConfig.getInitThreads() > 0) {
             executor = Executors.newFixedThreadPool(executorConfig.getInitThreads());
         } else {
-            executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3 + 1);
+            executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         }    
         
     }
